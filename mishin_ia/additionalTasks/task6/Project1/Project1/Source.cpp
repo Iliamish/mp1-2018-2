@@ -13,7 +13,7 @@ int main() {
 
 	for (int k = 0; k < N+M; k++)
 	{
-		if (((i<N) && (j<M) && (q[i]<b[j])) || (j > M-1))
+		if (((i<N) && (q[i]<b[j])) || (j > M-1))
 		{
 			c[k] = q[i];
 			i++;
