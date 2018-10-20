@@ -9,7 +9,7 @@ typedef struct{
 	char *name;
 	int price;
 	int sale;
-	int code[4];
+	char code[4];
 	int quantity;
 }product;
 
@@ -23,12 +23,28 @@ int main() {
 	products[3] = { "Bread", 30 , 2 , {7,1,3,4} , 0 };
 	products[4] = { "Salt", 90 , 30 , {9,1,3,4} , 0 };
 
-	printf("Hello!");
-	 
+	printf("Hello!\nProducts in warehouse:\n");
+
+	for (int i = 0; i < length; i++)
+	{
+		printf("%10s code: ", products[i].name);
+		for (int j = 0; j < 4; j++)
+		{
+			printf("%d ", products[i].code[j]);
+		}
+		printf("\n");
+	}
+
+	char a = 0;
+
 	while (true)
 	{
 		int code[4];
-		printf("\nPlese enter product code, enter space between each number: ");
+		if (a != 'g')
+			printf("\nPlese enter product code, enter space between each number: ");
+		else
+			printf("\nPlease enter code of purchase, that you want to cancel: ");
+
 		scanf_s("%d %d %d %d", &code[0], &code[1], &code[2], &code[3]);
 		int prodType = -1;
 
@@ -54,16 +70,27 @@ int main() {
 		}
 		else
 		{
-			products[prodType].quantity++;
-			printf("Name: %s, price: %d, sale: %d%% ", products[prodType].name, products[prodType].price, products[prodType].sale);
+			if (a != 'g')
+			{
+				products[prodType].quantity++;
+				printf("Name: %s, price: %d, sale: %d%% ", products[prodType].name, products[prodType].price, products[prodType].sale);
+
+			}
+			else
+			{
+				products[prodType].quantity--;
+				printf("Canceled: %s", products[prodType].name);
+
+			}
 		}
-		printf("\nPress spase to finish add products to check, or enter for continue: ");
-		char a = _getch();
+		printf("\nPress *spase* to finish adding products to check *enter* for continue\nOr *g* for call Galya and cansel purchase: ");
+		a = _getch();
 		if ((int)a == 32) 
 			break;
+		
 	}
 
-	printf("\n\n **** Your check ****\n");
+	printf("\n\n      **** Your check ****\n");
 
 	int cost = 0;
 	float saleCost = 0.0f;
@@ -72,11 +99,17 @@ int main() {
 	{
 		if (products[i].quantity != 0)
 		{
-			printf("\n%s  %d  %d  %d", products[i].name, products[i].price, products[i].quantity, products[i].price * products[i].quantity);
+			printf("\n%10s  %5d  %2d  %5d", products[i].name, products[i].price, products[i].quantity, products[i].price * products[i].quantity);
 			cost += products[i].price * products[i].quantity;
 			saleCost += products[i].price * products[i].quantity * (float)(1 - (float)products[i].sale / 100);
 		}
 	}
+	printf("\n");
+	for (int i = 0; i < 33; i++)
+	{
+		printf("*");
+	}
+
 	printf("\n\nCost: %d\nSale: %3.1f%%\nCost with discount: %d", cost, 100 * (float)(1 - (float)(saleCost / cost)), (int)saleCost);
 	_getch();
 	return 0;
