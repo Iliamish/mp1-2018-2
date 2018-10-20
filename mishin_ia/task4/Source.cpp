@@ -13,9 +13,7 @@ typedef struct{
 	int quantity;
 }product;
 
-
 int main() {
-
 	product products[length];
 	products[0] = { "Cheese", 100 , 5 , {2,1,3,4} , 0 };
 	products[1] = { "Meat" , 200 , 10 , {5,1,3,4} , 0};
@@ -74,20 +72,17 @@ int main() {
 			{
 				products[prodType].quantity++;
 				printf("Name: %s, price: %d, sale: %d%% ", products[prodType].name, products[prodType].price, products[prodType].sale);
-
 			}
 			else
 			{
 				products[prodType].quantity--;
 				printf("Canceled: %s", products[prodType].name);
-
 			}
 		}
 		printf("\nPress *spase* to finish adding products to check *enter* for continue\nOr *g* for call Galya and cansel purchase: ");
 		a = _getch();
 		if ((int)a == 32) 
 			break;
-		
 	}
 
 	printf("\n\n      **** Your check ****\n");
@@ -109,7 +104,6 @@ int main() {
 	{
 		printf("*");
 	}
-
 	printf("\n\nCost: %d\nSale: %3.1f%%\nCost with discount: %d", cost, 100 * (float)(1 - (float)(saleCost / cost)), (int)saleCost);
 	_getch();
 	return 0;
