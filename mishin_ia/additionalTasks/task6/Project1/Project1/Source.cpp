@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <conio.h>
 
 #define N 3
 #define M 3
@@ -12,20 +11,10 @@ int main() {
 	int i = 0, j = 0;
 
 	for (int k = 0; k < N+M; k++)
-	{
-
 		if ((j > M - 1) || ((i<N) && (q[i] < b[j])))
-		{
-			c[k] = q[i];
-			i++;
-		}
+			c[k] = q[i++];
 		else
-		{
-			c[k] = b[j];
-			j++;
-		}
-		printf("%d ", c[k]);
-	}
-	_getch();
+			c[k] = b[j++];
+
 	return 0;
 }
