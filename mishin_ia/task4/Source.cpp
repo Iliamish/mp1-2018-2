@@ -13,7 +13,21 @@ typedef struct{
 	int quantity;
 }product;
 
+typedef struct {
+	char firstName[30];
+	char lastName[40];
+	char patronymic[40];
+	char telNumber[12];
+	char email[50];
+	char organization[30];
+	char position[20];
+
+}human;
+
 int main() {
+
+	human humans[4];
+	humans[0] = { "Hohlov","Mark" ,"Olegovich", "+79023455678","dsfk@mail.ru"," "," " };
 	product products[length];
 	products[0] = { "Cheese", 100 , 5 , {2,1,3,4} , 0 };
 	products[1] = { "Meat" , 200 , 10 , {5,1,3,4} , 0};
