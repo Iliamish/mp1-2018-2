@@ -125,15 +125,42 @@ int main() {
 		files = (file*)malloc(sizeof(file));
 		WIN32_FIND_DATA FindFileData;
 		char str[250], strs[250];
-
-		printf("Enter folder path (Example c:\\\\folder1\\\\folder2\\\\) : ");
+		
+		printf("Enter folder path (Example c:\\folder1\\folder2) : ");
 		gets_s(str);
-		strcpy_s(strs, str);
+		
+		char link[250] = {0};
+		int pos = 0, ins = 0;
+		for (int i = 0; i < 250; i++)
+		{
+			if (str[i] == '\0')
+			{
+				for (int j = pos; j < i; j++)
+					link[j + ins] = str[j];
+				link[i + ins] = '\\';
+				link[i + ins + 1] = '\\';
+				link[i + ins + 2] = '\0';
+				break;
+			}
+			else
+			{
+				if (str[i] == '\\')
+				{
+					for (int j = pos; j <= i; j++)
+						link[j + ins] = str[j];
+					link[i + ins + 1] = '\\';
+					link[i + ins + 2] = '\0';
+					ins += 1;
+					pos = i + 1;
+				}
+			}
+		}
+
+		strcpy_s(strs, link);
 		strcat_s(strs, "*.*");
 
 		system("cls");
-		printf("Path: %s", str);
-
+		
 		HANDLE h = FindFirstFile(strs, &FindFileData);
 
 		int k = 0, flag = 0;
@@ -141,10 +168,10 @@ int main() {
 		{
 			do
 			{
-				char *link;
-				link = makeLink(str, FindFileData.cFileName);
+				char *fileName;
+				fileName = makeLink(link, FindFileData.cFileName);
 				strcpy_s(files[k].link, FindFileData.cFileName);
-				files[k].size = size(link);
+				files[k].size = size(fileName);
 				k++;
 				files = (file*)realloc(files, (k + 1) * sizeof(file));
 			} while (FindNextFile(h, &FindFileData));
@@ -182,7 +209,7 @@ int main() {
 			{
 				printf("\nDone!");
 			}			
-			while (a != '4' && a != '3')
+			while (a != '4' && a != '3' && a != '1')
 			{
 				printf("\nWhat you want:\n*0* - see sorted list\n*1* - choose new sorting method\n*2* - flip the list(ascending->descinding or descinding->ascending)\n*3* - enter new folder path\n*4* - exit\nYou choose: ");
 				a = _getch();
@@ -197,8 +224,7 @@ int main() {
 					}
 					break;
 				case '1':
-					chooseSort(int(sorts()) - 48, k, int(mode) - 48);
-					printf("\nDone!");
+					flag = 1;
 					break;
 				case '2':
 					chooseSort(int(srt) - 48, k, 1 - int(mode) + 48);

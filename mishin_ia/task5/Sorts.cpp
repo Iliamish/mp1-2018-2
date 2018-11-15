@@ -3,139 +3,137 @@
 #include <stdlib.h>
 #include <time.h>
 
-file *sorted;
-
-void swap(int idx1, int idx2)
-
+file* swap(file *files, int idx1, int idx2)
 {
-	file x = sorted[idx1];
-	sorted[idx1] = sorted[idx2];
-	sorted[idx2] = x;
+	file x = files[idx1];
+	files[idx1] = files[idx2];
+	files[idx2] = x;
+	return files;
 }
 
-void swipe(int length)
+file* swipe(file *files, int length)
 {
 	for (int i = 0; i < length / 2; i++)
 	{
-		swap(i, length - 1 - i);
+		files = swap(files ,i, length - 1 - i);
 	}
+	return files;
 }
 
 file* bubbleSort(file *files, int length, int mode)
 {
-	sorted = files;
 	for (int i = 0; i < length; i++)
 	{
 		for (int j = length - 1; j > i; j--)
 		{
-			if (sorted[j].size < sorted[j - 1].size)
+			if (files[j].size < files[j - 1].size)
 			{
-				swap(j, j - 1);
+				files = swap(files, j, j - 1);
 			}
 		}
 	}
 	if (mode == 1)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
 file* selectSort(file *files, int length, int mode)
 {
-	sorted = files;
-	int k, max = -1;
+	long long int max = -2;
+	int k;
 	for (int i = 0; i < length; i++)
 	{
-		max = -1;
+		max = -2;
 		for (int j = i; j < length; j++)
 		{
-			if (sorted[j].size > max)
+			if (files[j].size > max)
 			{
-				max = sorted[j].size;
+				max = files[j].size;
 				k = j;
 			}
 		}
-		swap(i, k);
+		files = swap(files, i, k);
 	}
 	if (mode == 0)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
 file* insertSort(file *files, int length, int mode)
 {
 	int j;
-	sorted = files;
 	for (int i = 0; i < length; i++)
 	{
-		file x = sorted[i];
-		for (j = i - 1; (j >= 0) && (sorted[j].size > x.size); j--)
-			sorted[j + 1] = sorted[j];
-		sorted[j + 1] = x;
+		file x = files[i];
+		for (j = i - 1; (j >= 0) && (files[j].size > x.size); j--)
+			files[j + 1] = files[j];
+		files[j + 1] = x;
 	}
 	if (mode == 1)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
 file* mergeSort(file *files, int length, int mode)
 {
-	sorted = files;
-	ms(0, length - 1);
+	ms(files, 0, length - 1);
 	if (mode == 1)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
-void ms(int first, int last)
+file* ms(file *files, int first, int last)
 {
 	if (first < last)
 	{
 		int split = (first + last) / 2;
-		ms(first, split);
-		ms(split + 1, last);
-		merge(first, split, last);
+		ms(files, first, split);
+		ms(files, split + 1, last);
+		merge(files, first, split, last);
 	}
+	return files;
 }
 
-void merge(int first, int split, int last)
+file* merge(file *files, int first, int split, int last)
 {
-	file *files;
-	files = (file *)calloc(last - first + 1, sizeof(file));
+	file *sorted;
+	sorted = (file *)calloc(last - first + 1, sizeof(file));
 	int i = first, j = split + 1;
 
 	for (int k = 0; k <= last - first; k++)
-		if ((j > last) || ((i <= split) && (sorted[i].size < sorted[j].size)))
-			files[k] = sorted[i++];
+		if ((j > last) || ((i <= split) && (files[i].size < files[j].size)))
+			sorted[k] = files[i++];
 		else
-			files[k] = sorted[j++];
+			sorted[k] = files[j++];
 	for (int k = first; k <= last; k++)
-		sorted[k] = files[k - first];
+		files[k] = sorted[k - first];
+	return files;
 }
 
 file* quickSort(file *files, int length, int mode)
 {
-	sorted = files;
-	qs(0, length-1);
+	files = qs(files, 0, length-1);
 	if (mode == 1)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
-void qs(int first, int last)
+file* qs(file *files, int first, int last)
 {
 	int i = first;
 	int j = last;
-	file x = sorted[(first + last) / 2];
+	file x = files[(first + last) / 2];
 	do {
-		while (sorted[i].size < x.size) i++;
-		while (sorted[j].size > x.size) j--;
+		while (files[i].size < x.size) i++;
+		while (files[j].size > x.size) j--;
 		if (i <= j) {
-			swap(i, j);
+			files = swap(files, i, j);
 			i++; j--;
 		}
 	} while (i <= j);
-	if (last > i) qs(i, last);
-	if (j > first) qs(first , j);
+	if (last > i) qs(files, i, last);
+	if (j > first) qs(files, first , j);
+	return files;
 }
 
 int increment(long inc[], long size) {
@@ -160,26 +158,26 @@ int increment(long inc[], long size) {
 
 file* shellSort(file *files, int length, int mode)
 {
-	sorted = files;
 	long inc, i, j, seq[40];
 	int s;
 	s = increment(seq, length);
 	while (s >= 0) {
 		inc = seq[s--];
 		for (i = inc; i < length; i++) {
-			file temp = sorted[i];
-			for (j = i - inc; (j >= 0) && (sorted[j].size > temp.size); j -= inc)
-				sorted[j + inc] = sorted[j];
-			sorted[j + inc] = temp;
+			file temp = files[i];
+			for (j = i - inc; (j >= 0) && (files[j].size > temp.size); j -= inc)
+				files[j + inc] = files[j];
+			files[j + inc] = temp;
 		}
 	}
 	if (mode == 1)
-		swipe(length);
-	return sorted;
+		files = swipe(files, length);
+	return files;
 }
 
 file* countingSort(file *files, int length, int mode)
 {
+	file *sorted;
 	sorted = (file *)calloc(length, sizeof(file));
 	int max = 0, *counts;
 	for (int i = 0; i < length; i++)
@@ -213,6 +211,6 @@ file* countingSort(file *files, int length, int mode)
 		sorted[counts[files[i].size + 1]] = files[i];
 	}
 	if (mode == 1)
-		swipe(length);
+		sorted = swipe(sorted, length);
 	return sorted;
 }
