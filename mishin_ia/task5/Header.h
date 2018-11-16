@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct{
-	char link[60];
+	char link[250];
 	long long int size;
 }file;
 

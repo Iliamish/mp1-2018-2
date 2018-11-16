@@ -166,6 +166,14 @@ int main() {
 		int k = 0, flag = 0;
 		if (h != INVALID_HANDLE_VALUE)
 		{
+			while (FindNextFile(h, &FindFileData))
+				k++;
+			
+			files = (file*)malloc(k * sizeof(file));
+			flag = 0;
+			k = 0;
+			h = FindFirstFile(strs, &FindFileData);
+
 			do
 			{
 				char *fileName;
@@ -173,10 +181,7 @@ int main() {
 				strcpy_s(files[k].link, FindFileData.cFileName);
 				files[k].size = size(fileName);
 				k++;
-				files = (file*)realloc(files, (k + 1) * sizeof(file));
 			} while (FindNextFile(h, &FindFileData));
-			files = (file*)realloc(files, k * sizeof(file));
-			flag = 0;
 		}
 		else
 		{
