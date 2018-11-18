@@ -119,14 +119,14 @@ char chooseMode()
 int main() {
 	printf("Hello!\nPress any button...");
 	_getch();
-	char str[250];
 	int newSort = 0;
+	char str[250], strs[250], link[250] = { 0 };
 	while (true)
 	{
 		system("cls");
 		files = (file*)malloc(sizeof(file));
 		WIN32_FIND_DATA FindFileData;
-		char strs[250], link[250] = { 0 };;
+		
 		if (newSort == 0)
 		{
 			printf("Enter folder path (Example c:\\folder1\\folder2) : ");
