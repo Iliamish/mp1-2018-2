@@ -119,43 +119,45 @@ char chooseMode()
 int main() {
 	printf("Hello!\nPress any button...");
 	_getch();
+	char str[250];
+	int newSort = 0;
 	while (true)
 	{
 		system("cls");
 		files = (file*)malloc(sizeof(file));
 		WIN32_FIND_DATA FindFileData;
-		char str[250], strs[250];
-		
-		printf("Enter folder path (Example c:\\folder1\\folder2) : ");
-		gets_s(str);
-		
-		char link[250] = {0};
-		int pos = 0, ins = 0;
-		for (int i = 0; i < 250; i++)
+		char strs[250], link[250] = { 0 };;
+		if (newSort == 0)
 		{
-			if (str[i] == '\0')
+			printf("Enter folder path (Example c:\\folder1\\folder2) : ");
+			gets_s(str);
+
+			int pos = 0, ins = 0;
+			for (int i = 0; i < 250; i++)
 			{
-				for (int j = pos; j < i; j++)
-					link[j + ins] = str[j];
-				link[i + ins] = '\\';
-				link[i + ins + 1] = '\\';
-				link[i + ins + 2] = '\0';
-				break;
-			}
-			else
-			{
-				if (str[i] == '\\')
+				if (str[i] == '\0')
 				{
-					for (int j = pos; j <= i; j++)
+					for (int j = pos; j < i; j++)
 						link[j + ins] = str[j];
+					link[i + ins] = '\\';
 					link[i + ins + 1] = '\\';
 					link[i + ins + 2] = '\0';
-					ins += 1;
-					pos = i + 1;
+					break;
+				}
+				else
+				{
+					if (str[i] == '\\')
+					{
+						for (int j = pos; j <= i; j++)
+							link[j + ins] = str[j];
+						link[i + ins + 1] = '\\';
+						link[i + ins + 2] = '\0';
+						ins += 1;
+						pos = i + 1;
+					}
 				}
 			}
 		}
-
 		strcpy_s(strs, link);
 		strcat_s(strs, "*.*");
 
@@ -230,6 +232,7 @@ int main() {
 					break;
 				case '1':
 					flag = 1;
+					newSort = 1;
 					break;
 				case '2':
 					chooseSort(int(srt) - 48, k, 1 - int(mode) + 48);
@@ -241,6 +244,7 @@ int main() {
 					break;
 				case '3':
 					flag = 1;
+					newSort = 0;
 					break;
 				default:
 					break;
