@@ -123,10 +123,12 @@ file* qs(file *files, int first, int last)
 	int i = first;
 	int j = last;
 	file x = files[(first + last) / 2];
-	do {
+	do 
+	{
 		while (files[i].size < x.size) i++;
 		while (files[j].size > x.size) j--;
-		if (i <= j) {
+		if (i <= j) 
+		{
 			files = swap(files, i, j);
 			i++; j--;
 		}
@@ -141,11 +143,14 @@ int increment(long inc[], long size) {
 
 	p1 = p2 = p3 = 1;
 	s = -1;
-	do {
-		if (++s % 2) {
+	do
+	{
+		if (++s % 2) 
+		{
 			inc[s] = 8 * p1 - 6 * p2 + 1;
 		}
-		else {
+		else 
+		{
 			inc[s] = 9 * p1 - 9 * p3 + 1;
 			p2 *= 2;
 			p3 *= 2;
@@ -161,9 +166,11 @@ file* shellSort(file *files, int length, int mode)
 	long inc, i, j, seq[40];
 	int s;
 	s = increment(seq, length);
-	while (s >= 0) {
+	while (s >= 0) 
+	{
 		inc = seq[s--];
-		for (i = inc; i < length; i++) {
+		for (i = inc; i < length; i++)
+		{
 			file temp = files[i];
 			for (j = i - inc; (j >= 0) && (files[j].size > temp.size); j -= inc)
 				files[j + inc] = files[j];

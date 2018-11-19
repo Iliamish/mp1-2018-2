@@ -92,44 +92,49 @@ void printSort(char sort)
 	}
 }
 
-char sorts()
+void printText(char directions[10], char *str, char sort)
 {
-	char a = ' ';
-	while (a < '0' || a > '9')
+	if (directions[0] == '1')
+	{
+		system("cls");
+		printf("Enter folder path (Example c:\\folder1\\folder2) : ");
+	}
+	if (directions[1] == '1')
+	{
+		printf("Path: %s", str);
+		printf("\nSort: ");
+		printSort(sort);
+	}
+	if (directions[2] == '1')
 	{
 		system("cls");
 		printf("\nChoose sorting method\n");
 		printf("*0* - bubble sort\n*1* - select sort\n*2* - insert sort\n*3* - merge sort\n*4* - quick sort\n*5* - shell sort\n*6* - count sort");
 		printf("\nYou choose: ");
-		a = _getch();
-		printSort(a);
 	}
-	return a;
-}
-
-char chooseMode()
-{
-	char mode;
-	printf("\nSort ascending(0) or descending(1)? \n(1/0): ");
-	mode = _getch();
-	printf("%c", mode);
-	return mode;
+	if (directions[3] == '1')
+	{
+		printf("\nSort ascending(0) or descending(1)? \n(1/0): ");
+	}
+	if (directions[4] == '1')
+	{
+		printf("\nWhat you want:\n*0* - see sorted list\n*1* - choose new sorting method\n*2* - flip the list(ascending->descinding or descinding->ascending)\n*3* - enter new folder path\n*4* - exit\nYou choose: ");
+	}
 }
 
 int main() {
+	files = (file*)malloc(sizeof(file));
 	printf("Hello!\nPress any button...");
 	_getch();
 	int newSort = 0;
-	char str[250], strs[250], link[250] = { 0 };
+	char str[250], strs[250], link[250] = { 0 }, srt;
 	while (true)
 	{
-		system("cls");
-		files = (file*)malloc(sizeof(file));
 		WIN32_FIND_DATA FindFileData;
 		
 		if (newSort == 0)
 		{
-			printf("Enter folder path (Example c:\\folder1\\folder2) : ");
+			printText("10000", str, srt);
 			gets_s(str);
 
 			int pos = 0, ins = 0;
@@ -160,8 +165,6 @@ int main() {
 		}
 		strcpy_s(strs, link);
 		strcat_s(strs, "*.*");
-
-		system("cls");
 		
 		HANDLE h = FindFirstFile(strs, &FindFileData);
 
@@ -171,7 +174,7 @@ int main() {
 			while (FindNextFile(h, &FindFileData))
 				k++;
 			
-			files = (file*)malloc(k * sizeof(file));
+			files = (file*)realloc(files, (k + 1) * sizeof(file));
 			flag = 0;
 			k = 0;
 			h = FindFirstFile(strs, &FindFileData);
@@ -197,13 +200,20 @@ int main() {
 
 		if (flag == 0 && a != '4')
 		{
-			char srt = sorts(), mode = chooseMode();
+			srt = ' ';
+			while (srt < '0' || srt > '9')
+			{
+				printText("00100", str, srt);
+				srt = _getch();
+			}
+			printSort(srt);
+			
+			char mode ;
+			printText("00010", str, srt);
+			mode = _getch();
 
 			system("cls");
-			printf("Path: %s", str);
-			printf("\nSort: ");
-			printSort(srt);
-
+			printText("01000", str, srt);
 			chooseSort(int(srt) - 48, k, int(mode) - 48);
 
 			if (files == 0)
@@ -218,7 +228,7 @@ int main() {
 			}			
 			while (a != '4' && a != '3' && a != '1')
 			{
-				printf("\nWhat you want:\n*0* - see sorted list\n*1* - choose new sorting method\n*2* - flip the list(ascending->descinding or descinding->ascending)\n*3* - enter new folder path\n*4* - exit\nYou choose: ");
+				printText("00001", str, srt);
 				a = _getch();
 				printf("%c", a);
 				switch (a)
