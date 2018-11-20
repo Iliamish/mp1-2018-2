@@ -127,7 +127,7 @@ int main() {
 	printf("Hello!\nPress any button...");
 	_getch();
 	int newSort = 0;
-	char str[250], strs[250], link[250] = { 0 }, srt;
+	char str[250], strs[250], link[250] = { 0 }, srt = ' ';
 	while (true)
 	{
 		WIN32_FIND_DATA FindFileData;
@@ -200,7 +200,6 @@ int main() {
 
 		if (flag == 0 && a != '4')
 		{
-			srt = ' ';
 			while (srt < '0' || srt > '9')
 			{
 				printText("00100", str, srt);
