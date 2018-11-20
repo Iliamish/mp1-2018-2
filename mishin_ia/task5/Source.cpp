@@ -200,6 +200,7 @@ int main() {
 
 		if (flag == 0 && a != '4')
 		{
+			srt = ' ';
 			while (srt < '0' || srt > '9')
 			{
 				printText("00100", str, srt);
