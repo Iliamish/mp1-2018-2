@@ -64,32 +64,13 @@ void chooseSort(int sort, int length, int mode)
 
 void printSort(char sort) 
 {	
-	switch (sort)
-	{
-	case('0'):
-		printf("bubble sort");
-		break;
-	case('1'):
-		printf("select sort");
-		break;
-	case('2'):
-		printf("insert sort");
-		break;
-	case('3'):
-		printf("merge sort");
-		break;
-	case('4'):
-		printf("quick sort");
-		break;
-	case('5'):
-		printf("shell sort");
-		break;
-	case('6'):
-		printf("count sort");
-		break;
-	default:
-		break;
-	}
+	int k = int(sort) - 48;
+	char sorts[7][13] = { "bubble sort" , "select sort", "insert sort", "merge sort", "quick sort","shell sort" ,"count sort" };
+	if (k != 7)
+		printf("%s", sorts[k]);
+	else
+		for (int i = 0; i < k; i++)
+			printf("\n*%d* - %s", i, sorts[i]);
 }
 
 void printText(char directions[10], char *str, char sort)
@@ -108,8 +89,8 @@ void printText(char directions[10], char *str, char sort)
 	if (directions[2] == '1')
 	{
 		system("cls");
-		printf("\nChoose sorting method\n");
-		printf("*0* - bubble sort\n*1* - select sort\n*2* - insert sort\n*3* - merge sort\n*4* - quick sort\n*5* - shell sort\n*6* - count sort");
+		printf("Choose sorting method\n");
+		printSort('7');
 		printf("\nYou choose: ");
 	}
 	if (directions[3] == '1')
