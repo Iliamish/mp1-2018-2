@@ -31,32 +31,10 @@ char *makeLink(char folder[250], char doc[60])
 void chooseSort(int sort, int length, int mode) 
 {
 	clock_t t1 = clock(), t2;
-	switch (sort)
-	{
-	case 0: 
-		files = bubbleSort(files, length, mode);
-		break;
-	case 1:
-		files = selectSort(files, length, mode);
-		break;
-	case 2:
-		files = insertSort(files, length, mode);
-		break;
-	case 3:
-		files = mergeSort(files, length, mode);
-		break;
-	case 4:
-		files = quickSort(files, length, mode);
-		break;
-	case 5:
-		files = shellSort(files, length, mode);
-		break;
-	case 6:
-		files = countingSort(files, length, mode);
-		break;
-	default:
-		break;
-	}
+
+	file* (*sorts[7]) (file *files, int length, int mode) = { bubbleSort , selectSort, insertSort, mergeSort, quickSort , shellSort ,countingSort };
+	files = sorts[sort](files, length, mode);
+
 	t2 = clock();
 	double tt = (double)(t2 - t1) / CLOCKS_PER_SEC;
 	printf("\nSort time: %f", tt);
