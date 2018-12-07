@@ -14,7 +14,6 @@ double power(double x, int deg)
 	{
 		result *= x;
 	}
-	
 	return result;
 }
 
@@ -30,16 +29,17 @@ double combinations(int n, int k)
 
 double bernulli(int n) 
 {
-	/*if (n == 0) return 1;
-	double bernul = 0;
-	for (unsigned long i = 1; i <= n; i++)
-		bernul += combinations(n + 1, i + 1)*bernulli(n - i);
-	return -1.0 / (n + 1)*bernul;*/
-	double b0 = 1.;
-	for (int i = 0; i < n; i++)
+	double bernull[300] = {0};
+	bernull[0] = 1.;
+	for (int i = 1; i <= n; i++)
 	{
-
+		for (int j = 1; j <= i; j++)
+		{
+			bernull[i] += combinations(i + 1, j + 1) * bernull[i - j];
+		}
+		bernull[i] *= (-1.) / double(i + 1);
 	}
+	return bernull[n];
 }
 
 void my_sin(double x, double accuracy, int n_elements) 
@@ -64,7 +64,21 @@ void my_sin(double x, double accuracy, int n_elements)
 
 void my_sin(double x, int n_experiments) 
 {
+	int i;
+	double result = 0, middleres;
+	double machineResult = sin(x * M_PI / 180);
 
+	printf("\nReference value: %lf", machineResult);
+
+	x *= M_PI / 180;
+	middleres = x;
+	for (i = 1; i < n_experiments; i++)
+	{
+		result += middleres;
+		middleres *= ((-1) * power(x, 2)) / (double(2 * i) * double(2 * i + 1));
+//		printf("\n*%d* Function value: %lf Accuracy: %lf", resu);
+	}
+	_getch();
 }
 
 void my_cos(double x, double accuracy, int n_elements) 
@@ -120,17 +134,19 @@ void my_tg(double x, double accuracy, int n_elements)
 {
 	x *= M_PI / 180;
 	int i;
-	double result = x, middleres1 = x, middleres2 = x;
+	double result = 0, middleres1 = 1., middleres2 = 1.;
 	double machineResult = tan(x);
 
 	printf("\nReference value: %lf", machineResult);
 
-	for (i = 2; i < n_elements; i++)
+	for (i = 1; i < n_elements; i++)
 	{
-		middleres1 *= ((-4) * power(x, 2) * bernulli(2*i)) / (double(2 * i) * double(2 * i - 1));
-		middleres2 *= ((16) * power(x, 2) * bernulli(2 * i)) / (double(2 * i) * double(2 * i - 1));
+		double berni = bernulli(2 * i) / bernulli (2 * i - 2);
+		middleres1 *= ((-4) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
+		middleres2 *= ((16) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
 		result += middleres1 + middleres2;
 		if (fabs(result - machineResult) < accuracy) break;
+		printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result, fabs(result - machineResult), i - 1);
 	}
 	printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result, fabs(result - machineResult), i - 1);
 	_getch();

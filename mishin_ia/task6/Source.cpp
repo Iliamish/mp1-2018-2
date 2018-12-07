@@ -14,7 +14,7 @@ void mode1() {
 	char *funcNames[N] = { "sin", "cos", "exp", "arcsin", "tg" };
 	char enteredFunc[10];
 	double accuracy = 0.0002, x = 0;
-	int n_elements = 10;
+	int n_elements = 100;
 
 	printf("Enter your task(Example: sin 3.14): ");
 	scanf("%s %lf", enteredFunc, &x);
@@ -67,5 +67,6 @@ int main() {
 	printf("Choose mode (1/2): ");
 	int a;
 	scanf_s("%d", &a);
+	
 	modes[a-1]();
 }
