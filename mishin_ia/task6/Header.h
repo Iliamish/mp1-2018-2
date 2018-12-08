@@ -1,5 +1,6 @@
 #pragma once
 
+double power(double x, int deg);
 double combinations(int n, int k);
 double bernulli(int n);
 void my_sin(double x, double accuracy, int n_elements);

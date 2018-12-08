@@ -76,7 +76,7 @@ void my_sin(double x, int n_experiments)
 	{
 		result += middleres;
 		middleres *= ((-1) * power(x, 2)) / (double(2 * i) * double(2 * i + 1));
-//		printf("\n*%d* Function value: %lf Accuracy: %lf", resu);
+		printf("\n*%d* Function value: %lf Accuracy: %lf", i, result, fabs(result - machineResult));
 	}
 	_getch();
 }
@@ -103,7 +103,21 @@ void my_cos(double x, double accuracy, int n_elements)
 
 void my_cos(double x, int n_experiments)
 {
+	int i;
+	double result = 0, middleres;
+	double machineResult = cos(x * M_PI / 180);
 
+	printf("\nReference value: %lf", machineResult);
+
+	x *= M_PI / 180;
+	middleres = 1;
+	for (i = 1; i < n_experiments; i++)
+	{
+		result += middleres;
+		middleres *= ((-1) * power(x, 2)) / (double(2 * i) * double(2 * i - 1));
+		printf("\n*%d* Function value: %lf Accuracy: %lf", i, result, fabs(result - machineResult));
+	}
+	_getch();
 }
 
 void my_exp(double x, double accuracy, int n_elements) 
@@ -127,26 +141,41 @@ void my_exp(double x, double accuracy, int n_elements)
 
 void my_exp(double x, int n_experiments)
 {
+	int i;
+	double result = 1.0, middleres;
+	double machineResult = exp(x);
 
+	printf("\nReference value: %lf", machineResult);
+
+	middleres = x;
+	for (i = 1; i < n_experiments; i++)
+	{
+		result += middleres;
+		middleres *= x / double(i + 1);
+		printf("\n*%d* Function value: %lf Accuracy: %lf", i, result, fabs(result - machineResult));
+	}
+	_getch();
 }
 
 void my_tg(double x, double accuracy, int n_elements)
 {
 	x *= M_PI / 180;
 	int i;
-	double result = 0, middleres1 = 1., middleres2 = 1.;
+	double result = 0, middleres1 = 1., middleres2 = -1.;
 	double machineResult = tan(x);
 
 	printf("\nReference value: %lf", machineResult);
 
+	middleres1 /= x;
+	middleres2 /= x;
+
 	for (i = 1; i < n_elements; i++)
 	{
 		double berni = bernulli(2 * i) / bernulli (2 * i - 2);
-		middleres1 *= ((-4) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
-		middleres2 *= ((16) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
+		middleres1 *= ((-4.) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
+		middleres2 *= ((-16.) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
 		result += middleres1 + middleres2;
 		if (fabs(result - machineResult) < accuracy) break;
-		printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result, fabs(result - machineResult), i - 1);
 	}
 	printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result, fabs(result - machineResult), i - 1);
 	_getch();
@@ -154,30 +183,61 @@ void my_tg(double x, double accuracy, int n_elements)
 
 void my_tg(double x, int n_experiments) 
 {
+	x *= M_PI / 180;
+	int i;
+	double result = 0, middleres1 = 1., middleres2 = -1.;
+	double machineResult = tan(x);
 
+	printf("\nReference value: %lf", machineResult);
+
+	middleres1 /= x;
+	middleres2 /= x;
+
+	for (i = 1; i < n_experiments; i++)
+	{
+		double berni = bernulli(2 * i) / bernulli(2 * i - 2);
+		middleres1 *= ((-4.) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
+		middleres2 *= ((-16.) * power(x, 2) * berni) / (double(2 * i) * double(2 * i - 1));
+		result += middleres1 + middleres2;
+		printf("\n*%d* Function value: %lf Accuracy: %lf", i, result, fabs(result - machineResult));
+	}
+	_getch();
 }
 
 void my_arcsin(double x, double accuracy, int n_elements) 
 {
 	int i;
-	double result = 0, middleres;
-	double machineResult = sin(x * M_PI / 180);
+	double result = x, middleres = x;
+	double machineResult = asin(x) * 180 / M_PI;
 
 	printf("\nReference value: %lf", machineResult);
 
-	x *= M_PI / 180;
-	middleres = x;
 	for (i = 1; i < n_elements; i++)
 	{
+		middleres *= ((double(2 * i) * double(2 * i - 1) * power(x, 2)) / ((4.) * power(double(i), 2) * (2 * i + 1)));
 		result += middleres;
-		middleres *= ((-1) * power(x, 2)) / (double(2 * i) * double(2 * i + 1));
-		if (fabs(result - machineResult) < accuracy) break;
+		middleres /= (2 * i + 1);
+		if (fabs(result * 180 / M_PI - machineResult) < accuracy) break;
 	}
-	printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result, fabs(result - machineResult), i - 1);
+	result *= 180 / M_PI;
+	printf("\nFunction value: %lf\nAccuracy: %lf\nNumber of elements: %d", result , fabs(result - machineResult) , i - 1);
 	_getch();
 }
 
 void my_arcsin(double x, int n_experiments) 
 {
+	int i;
+	double result = x, middleres = x;
+	double machineResult = asin(x) * 180 / M_PI;
 
+	printf("\nReference value: %lf", machineResult);
+
+	for (i = 1; i < n_experiments; i++)
+	{
+		middleres *= ((double(2 * i) * double(2 * i - 1) * power(x, 2)) / ((4.) * power(double(i), 2) * (2 * i + 1)));
+		result += middleres;
+		middleres /= (2 * i + 1);
+		printf("\n*%d* Function value: %lf Accuracy: %lf", i, result * 180 / M_PI , fabs(result* 180 / M_PI - machineResult));
+	}
+	_getch();
 }

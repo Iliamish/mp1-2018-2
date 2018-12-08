@@ -14,24 +14,21 @@ void mode1() {
 	char *funcNames[N] = { "sin", "cos", "exp", "arcsin", "tg" };
 	char enteredFunc[10];
 	double accuracy = 0.0002, x = 0;
-	int n_elements = 100;
+	int n_elements = 1000;
 
 	printf("Enter your task(Example: sin 3.14): ");
 	scanf("%s %lf", enteredFunc, &x);
-	/*printf("\nEnter accuracy (>= 0.000001): ");
+	printf("\nEnter accuracy (>= 0.000001): ");
 	scanf("%lf", &accuracy);
 	printf("\nEnter number of elements of a series(between 1 and 1000): ");
-	scanf("%d", &n_elements);*/
-	printf("\nYou enter: %s %lf\nAccuracy: %lf\nNumber of elements: %d", enteredFunc, x, accuracy, n_elements);
+	scanf("%d", &n_elements);
+	printf("\nYou enter: %s %lf\nAccuracy: %lf\nNumber of elements: %d\n", enteredFunc, x, accuracy, n_elements);
 	for (int i = 0; i < N; i++)
-	{
 		if (!strcmp(funcNames[i], enteredFunc))
 		{
 			funcs[i](x, accuracy, n_elements + 1);
 			break;
 		}
-	}	
-	_getch();
 }
 
 void mode2() {
@@ -40,23 +37,20 @@ void mode2() {
 	char *funcNames[N] = { "sin", "cos", "exp", "arcsin", "tg" };
 	char enteredFunc[10];
 	double x = 0;
-	int n_elements = 2;
+	int n_experiments = 25;
 
 	printf("Enter your task(Example: sin 3.14): ");
 	scanf("%s %lf", enteredFunc, &x);
-	/*
-	printf("\nEnter number of elements of a series(between 1 and 1000): ");
-	scanf("%d", &n_elements);*/
-	printf("\nYou enter: %s %lf\nNumber of elements: %d", enteredFunc, x, n_elements);
+	
+	printf("\nEnter number of experiments(between 1 and 25): ");
+	scanf("%d", &n_experiments);
+	printf("\nYou enter: %s %lf\nNumber of experiments: %d\n", enteredFunc, x, n_experiments);
 	for (int i = 0; i < N; i++)
-	{
 		if (!strcmp(funcNames[i], enteredFunc))
 		{
-			funcs[i](x, n_elements + 1);
+			funcs[i](x, n_experiments + 1);
 			break;
 		}
-	}
-	_getch();
 }
 
 
@@ -64,9 +58,12 @@ int main() {
 	void (*modes[2])() = { mode1 , mode2 };
 	printf("Hello!\nPress any button...");
 	_getch();
+	system("cls");
 	printf("Choose mode (1/2): ");
 	int a;
 	scanf_s("%d", &a);
-	
 	modes[a-1]();
+	system("cls");
+	printf("Good Bye!");
+	_getch();
 }
