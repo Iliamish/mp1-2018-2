@@ -24,7 +24,9 @@ double combinations(int n, int k)
 
 double bernulli(int n) 
 {
-	double bernull[300] = {0};
+	if (n > 255)
+		n = 255;
+	double bernull[256] = {0};
 	bernull[0] = 1.;
 	for (int i = 1; i <= n; i++)
 	{
