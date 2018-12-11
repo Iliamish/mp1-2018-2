@@ -161,10 +161,27 @@ void my_tg(double x, double accuracy, int n_elements)
 {
 	x *= M_PI / 180;
 	int i;
-	double result = 0, middleres1 = 1., middleres2 = -1.;
 	double machineResult = tan(x);
 
 	printf("\nReference value: %lf", machineResult);
+
+	double resultcos = 0., middlerescos = 1., resultsin = 0., middleressin = x;
+	double machineResultsin = sin(x), machineResultcos = cos(x);
+
+	for (i = 1; i < n_elements; i++)
+	{
+		resultcos += middlerescos;
+		middlerescos *= ((-1.) * power(x, 2)) / (double(2 * i) * double(2 * i - 1));
+
+		resultsin += middleressin;
+		middleressin *= ((-1.) * power(x, 2)) / (double(2 * i) * double(2 * i + 1));
+
+		if (fabs(resultsin - machineResultsin) < accuracy && fabs(resultcos - machineResultcos) < accuracy) break;
+	}
+	
+	printf("\nValue of sin/cos : %lf\nAccuracy: %lf\n", resultsin / resultcos, fabs(resultsin / resultcos - machineResult));
+
+	double result = 0, middleres1 = 1., middleres2 = -1.;
 
 	middleres1 /= x;
 	middleres2 /= x;
